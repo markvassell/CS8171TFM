@@ -14,7 +14,7 @@ assembly template-free modeling system
 * Energy function: Rosetta 3, Dfire energy function (executable available), Yang Zhang’s RW potential
 (executable available), or something else
 * Sampling approach
-* Testing: 3 CASP11 TFM targets 
+* Testing: 3 CASP11 TFM targets [CASP11](http://predictioncenter.org/casp11/index.cgi)
 
 ### Environment
 
