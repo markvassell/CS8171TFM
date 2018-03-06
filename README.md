@@ -14,7 +14,7 @@ assembly template-free modeling system
 * Energy function: Rosetta 3, Dfire energy function (executable available), Yang Zhang’s RW potential
 (executable available), or something else
 * Sampling approach
-* Testing: 3 CASP11 TFM targets [CASP11](http://predictioncenter.org/casp11/index.cgi)
+* Testing: 3 CASP12 TFM targets [CASP11](http://predictioncenter.org/casp12/index.cgi)
 
 ### Environment
 
@@ -23,3 +23,10 @@ Project interpreter: Python 3.6
 
 Packages:  Biopython
 
+
+### Helpful Links:
+
+* [Rosetta Fragment Database Files](http://www.robetta.org/downloads/casp/casp12/fragments/)
+* [Rosetta File Contents Breakdown](https://www.rosettacommons.org/docs/latest/rosetta_basics/file_types/fragment-file)
+* [CASP12 Files](http://predictioncenter.org/casp12/targetlist.cgi) 
+* [Biopython Help](http://biopython.org/DIST/docs/tutorial/Tutorial.html)
