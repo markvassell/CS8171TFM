@@ -30,3 +30,4 @@ Packages:  Biopython
 * [Rosetta File Contents Breakdown](https://www.rosettacommons.org/docs/latest/rosetta_basics/file_types/fragment-file)
 * [CASP12 Files](http://predictioncenter.org/casp12/targetlist.cgi) 
 * [Biopython Help](http://biopython.org/DIST/docs/tutorial/Tutorial.html)
+* [dDFire Energy Function](http://sparks-lab.org/yueyang/server/dDFIRE/)
