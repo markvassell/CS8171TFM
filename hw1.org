@@ -93,7 +93,7 @@ greatest. The equation:
 x' = (x - min(x))/(max(x) - min(x))
 #+END_SRC 
 
-A view of one of my results can be found here [[results/embeddings/rescaled_bot_scoringv2.csv][Rescaled Bot Scoring V2]]
+A view of one of my results can be found here [[./results/embeddings/rescaled_bot_scoringv2.csv][Rescaled Bot Scoring V2]]
 
 Here is a view of my rescale function in python 3.6
 #+BEGIN_SRC 
