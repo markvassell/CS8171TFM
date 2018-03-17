@@ -143,7 +143,7 @@ def function(filename, fragmentFile):
     plt.show()
 
 
-function("../Data/T0868/T0868.fasta","../Data/T0868/t000_.200.9mers")
+function("../Data/T0880/T0880.fasta","../Data/T0880/t000_.200.9mers")
 
 
 
