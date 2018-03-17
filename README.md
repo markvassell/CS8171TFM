@@ -31,3 +31,4 @@ Packages:  Biopython
 * [CASP12 Files](http://predictioncenter.org/casp12/targetlist.cgi) 
 * [Biopython Help](http://biopython.org/DIST/docs/tutorial/Tutorial.html)
 * [dDFire Energy Function](http://sparks-lab.org/yueyang/server/dDFIRE/)
+* [PyRosetta Gide](http://graylab.jhu.edu/pyrosetta/downloads/documentation/PyRosetta_Workshops_Appendix_A.pdf)
