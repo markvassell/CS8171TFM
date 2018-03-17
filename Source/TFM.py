@@ -26,50 +26,42 @@ def function(filename, fragmentFile):
     for seq_record in SeqIO.parse(filename, "fasta"):
         seq = seq_record.seq
 
-    fragments = open(fragmentFile, "r")
-
     seqString = ''.join(str(e) for e in seq)
     pose = pose_from_sequence(seqString)
 
-    loopNum = (len(seq) - 1) // 9 + 1
-
-    for i in range(0, loopNum):
+    fragments = open(fragmentFile, "r")
+    current_count = 1
+    while current_count <= len(seq):
         positionLine = fragments.readline()
-        tp2 = positionLine.split(" ");
-        while tp2[0] != 'position:':
-            tp = pos.readline()
-            tp2 = tp.split(" ");
-        pos.readline()
-        for j in range(0, 9):
-            tp = pos.readline()
-            tp2 = tp.split(" ");
-            while '' in tp2:
-                tp2.remove('')
-            # print((tp2))
-            # break
-            L2.append(tp2[5])
-            L3.append(tp2[6])
-    for i in range(1, pose.total_residue() + 1):
-        pose.set_phi(i, -180)
-        pose.set_psi(i, 180)
-        pose.set_omega(i, 180)
+        temp = positionLine.split(" ")
+        temp = filter(None, temp)
+        if temp[0] == "position:" and int(temp[1]) == current_count:
+            fragments.readline()
+            for j in range(0, 9):
+                temp = fragments.readline().split(" ");
+                temp = filter(None, temp)
+                if current_count <= len(seq):
+                    pose.set_phi(current_count, float(temp[5]))
+                    pose.set_psi(current_count, float(temp[6]))
+                    pose.set_omega(current_count, float(temp[7]))
+                    current_count = current_count + 1
+                else:
+                    break
 
-    full_scorefxn = create_score_function('ref2015')
+
+
+# def ReplaceFragment():
+
+
+
+    # full_scorefxn = create_score_function('ref2015')
     # pose_score = full_scorefxn(pose)
-    print('ScoreFunction', full_scorefxn(pose))
 
-    # for i in range(1, pose.total_residue() + 1):
-    #     pose.set_phi(i, -180)
-    #     pose.set_psi(i, 180)
-    #     pose.set_omega(i, 180)
-    #
     # pose.dump_pdb('1.pdb')
 
 
 
-
-
-function("../Data/T0866/T0866.fasta")
+function("../Data/T0866/T0866.fasta","../Data/T0880/t000_.200.9mers")
 
 
 
