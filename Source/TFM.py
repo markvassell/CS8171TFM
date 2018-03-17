@@ -4,7 +4,7 @@ from rosetta import *
 from pyrosetta import *
 from Bio import SeqIO
 import random
-from math import exp
+import math
 
 # parser = PDBParser(PERMISSIVE=1)
 # structure_id = "T0779"
@@ -23,12 +23,17 @@ for seq_record in SeqIO.parse("../Data/T0880/T0880.fasta", "fasta"):
     seq_T0880 = seq_record.seq
 
 def prob_function(new_energy, current_energy, current_temp):
-   pro =  exp(-(new_energy - current_energy)/current_temp)
-   num = random.randint(1, 100)*0.01
-   if(pro > num):
-       return True
-   else:
-       return False
+    if new_energy < current_energy:
+        return True
+    else:
+        prob = math.exp((current_energy - new_energy)/current_temp)
+        random_num = random.randint(1, 10)*0.1
+        print('prosibility = ', prob, 'random number = ', random_num)
+        if prob > random_num:
+            return True
+        else:
+            return False
+
 
 def function(filename, fragmentFile):
     for seq_record in SeqIO.parse(filename, "fasta"):
@@ -58,7 +63,7 @@ def function(filename, fragmentFile):
 
     init_pose.dump_pdb("initial_structure.pdb")
 
-    temperature = 100
+    temperature = 1000
     full_scorefxn = create_score_function('ref2015')
 
     current_energy = full_scorefxn(init_pose)
@@ -66,8 +71,9 @@ def function(filename, fragmentFile):
     ebest = current_energy
     sbest = init_pose
 
-    while temperature > 0:
+    energy_history = []
 
+    while temperature > 0:
         new_s = current_s
         # random replace one fragment
         position_random = random.randint(1, len(seq) - 9)
@@ -85,7 +91,6 @@ def function(filename, fragmentFile):
                 for j in range(0, 9):
                     temp = fragments.readline().split(" ");
                     temp = filter(None, temp)
-                    print(temp)
                     new_s.set_phi(position_random + j, float(temp[5]))
                     new_s.set_psi(position_random + j, float(temp[6]))
                     new_s.set_omega(position_random + j, float(temp[7]))
@@ -93,20 +98,21 @@ def function(filename, fragmentFile):
                 break
 
         new_score = full_scorefxn(new_s)
-
+        # print("new score = ",new_score,"current_energy", current_energy,temperature)
         if prob_function(new_score, current_energy, temperature):
             current_s = new_s
             current_energy = new_score
-            current_s.dump_pdb("temperature:" + str(temperature) + ".pdb")
+            energy_history.append(current_energy)
+            current_s.dump_pdb("temperature" + str(temperature) + ".pdb")
 
         if ebest > new_score:
             sbest = new_s
             ebest = new_score
 
-
-        temperature -= 0.1
+        temperature -= 10
 
     sbest.dump_pdb("best_structure.pdb")
+    print(energy_history)
 
 
 function("../Data/T0866/T0866.fasta","../Data/T0880/t000_.200.9mers")
