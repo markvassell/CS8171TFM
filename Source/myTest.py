@@ -7,11 +7,11 @@ from math import exp
 from random import randint
 init()
 #pose = pose_from_pdb("../Data/T0880/T0880TS023_1.pdb")
-pose = pose_from_pdb("../Data/T0880/T0880_template.pdb")
+# pose = pose_from_pdb("~/home/markvassell/Project_2/CS8171TFM/Data/T0880/T0880TS023_1.pdb")
 
 # print (pose.is_fullatom())
 # print(pose.residue(5))
-#scorefxn = get_fa_scorefxn()
+scorefxn = get_fa_scorefxn()
 #print(scorefxn.show(pose))
 
 def prob_function(current_energy, pass_energy, current_temp):
@@ -19,11 +19,11 @@ def prob_function(current_energy, pass_energy, current_temp):
 
 
 
-print(prob_function(100,200,100))
-
+# print(prob_function(100,200,100))
 
 current_temp = 100
-structure = pose_from_pdb("../Data/T0880/T0880_template.pdb")
+structure = pose_from_pdb("../Data/T0880/T0880TS023_1.pdb")
+print(scorefxn.show(structure))
 sbest = "initial structure" # same as structure to start off with
 ebest = "Energy of initial structure" # energy of the initial structure
 
