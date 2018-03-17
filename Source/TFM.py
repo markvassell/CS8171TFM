@@ -5,6 +5,8 @@ from pyrosetta import *
 from Bio import SeqIO
 import random
 import math
+import sys
+import matplotlib.pyplot as plt
 
 # parser = PDBParser(PERMISSIVE=1)
 # structure_id = "T0779"
@@ -26,9 +28,9 @@ def prob_function(new_energy, current_energy, current_temp):
     if new_energy < current_energy:
         return True
     else:
-        prob = math.exp((current_energy - new_energy)/current_temp)
+        prob = math.exp((current_energy - new_energy)/current_temp*0.01)
         random_num = random.randint(1, 10)*0.1
-        print('prosibility = ', prob, 'random number = ', random_num)
+        # print('prosibility = ', prob, 'random number = ', random_num)
         if prob > random_num:
             return True
         else:
@@ -48,22 +50,40 @@ def function(filename, fragmentFile):
         positionLine = fragments.readline()
         temp = positionLine.split(" ")
         temp = filter(None, temp)
-        if temp[0] == "position:" and int(temp[1]) == current_count:
-            fragments.readline()
-            for j in range(0, 9):
-                temp = fragments.readline().split(" ");
-                temp = filter(None, temp)
-                if current_count <= len(seq):
-                    init_pose.set_phi(current_count, float(temp[5]))
-                    init_pose.set_psi(current_count, float(temp[6]))
-                    init_pose.set_omega(current_count, float(temp[7]))
-                    current_count = current_count + 1
-                else:
+        try:
+            if temp[0] == "position:":
+                if int(temp[1]) == current_count and int(temp[1]) < len(seq)-8:
+                    fragments.readline()
+                    for j in range(0, 9):
+                        temp = fragments.readline().split(" ");
+                        temp = filter(None, temp)
+                        init_pose.set_phi(current_count, float(temp[5]))
+                        init_pose.set_psi(current_count, float(temp[6]))
+                        init_pose.set_omega(current_count, float(temp[7]))
+                        current_count = current_count + 1
+
+                elif(int(temp[1]) == len(seq) - 8):
+                    print('secondary')
+                    print(temp)
+                    fragments.readline()
+                    for j in range(0, 9):
+                        temp = fragments.readline().split(" ");
+                        temp = filter(None, temp)
+                        print(temp)
+                        init_pose.set_phi(int(temp[1])+j, float(temp[5]))
+                        init_pose.set_psi(int(temp[1])+j, float(temp[6]))
+                        init_pose.set_omega(int(temp[1])+j, float(temp[7]))
+
                     break
+
+        except:
+            print('Caught error: ', sys.exc_info()[0])
+            break
+
 
     init_pose.dump_pdb("initial_structure.pdb")
 
-    temperature = 1000
+    temperature = 100
     full_scorefxn = create_score_function('ref2015')
 
     current_energy = full_scorefxn(init_pose)
@@ -91,9 +111,12 @@ def function(filename, fragmentFile):
                 for j in range(0, 9):
                     temp = fragments.readline().split(" ");
                     temp = filter(None, temp)
-                    new_s.set_phi(position_random + j, float(temp[5]))
-                    new_s.set_psi(position_random + j, float(temp[6]))
-                    new_s.set_omega(position_random + j, float(temp[7]))
+                    try:
+                        new_s.set_phi(position_random + j, float(temp[5]))
+                        new_s.set_psi(position_random + j, float(temp[6]))
+                        new_s.set_omega(position_random + j, float(temp[7]))
+                    except:
+                        continue
 
                 break
 
@@ -105,17 +128,22 @@ def function(filename, fragmentFile):
             energy_history.append(current_energy)
             current_s.dump_pdb("temperature" + str(temperature) + ".pdb")
 
+        print('new score', new_score, 'e best',ebest)
+
         if ebest > new_score:
             sbest = new_s
             ebest = new_score
 
-        temperature -= 10
+        temperature -= 0.1
 
     sbest.dump_pdb("best_structure.pdb")
     print(energy_history)
+    plt.plot(energy_history)
+    plt.ylabel('energy')
+    plt.show()
 
 
-function("../Data/T0866/T0866.fasta","../Data/T0880/t000_.200.9mers")
+function("../Data/T0868/T0868.fasta","../Data/T0868/t000_.200.9mers")
 
 
 
